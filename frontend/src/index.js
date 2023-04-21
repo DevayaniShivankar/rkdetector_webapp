@@ -1,0 +1,68 @@
+/*!
+
+=========================================================
+* Paper Dashboard React - v1.3.1
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
+* Copyright 2022 Creative Tim (https://www.creative-tim.com)
+
+* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/main/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
+import { createRoot } from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import  { useState, useEffect } from "react";
+
+import "bootstrap/dist/css/bootstrap.css";
+import "./assets/scss/paper-dashboard.scss?v=1.3.0";
+import "assets/demo/demo.css";
+import "perfect-scrollbar/css/perfect-scrollbar.css";
+
+import Dashboard from "layouts/Admin.js";
+
+// const root = ReactDOM.createRoot(document.getElementById("root"));
+
+// root.render(
+//   
+// );
+function AppWithCallbackAfterRender() {
+
+  const [data, setdata] = useState({ 
+    text: ""
+});
+
+useEffect(()=>{
+  fetch('http://localhost:5000/',{
+    'methods':'GET',
+    headers : {
+      'Content-Type':'text/plain'
+    }
+  })
+  // .then(response => response.json())
+  .then(setdata(data.text))
+  .catch(error => console.log(error))
+
+},[])
+
+  return(
+    <BrowserRouter>
+     <Switch>
+       <Route path="/admin" render={(props) => <Dashboard {...props} />} />
+       <Redirect to="/admin/dashboard" />
+     </Switch>
+   </BrowserRouter>
+  )
+}
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<AppWithCallbackAfterRender />);
